@@ -2,4 +2,9 @@
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.check.command": "build",
     "rust-analyzer.check.workspace": false,
+    "rust-analyzer.linkedProjects": [
+        "Cargo.toml",
+        "loader/Cargo.toml",
+        "modules/Cargo.toml"
+    ]
 }
