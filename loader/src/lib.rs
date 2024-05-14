@@ -1,5 +1,8 @@
 #![no_std]
 
+mod dynloader;
+mod elf;
+
 use core::panic::PanicInfo;
 
 use limine::BaseRevision;
