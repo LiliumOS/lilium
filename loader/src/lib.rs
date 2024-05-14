@@ -12,6 +12,7 @@ static BASE_REVISION: BaseRevision = BaseRevision::new();
 
 #[no_mangle]
 unsafe extern "C" fn _start() -> ! {
+    dynloader::init_dyn_loader(0);
     assert!(BASE_REVISION.is_supported());
     loop {}
 }

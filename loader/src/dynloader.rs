@@ -31,12 +31,10 @@ pub unsafe fn init_dyn_loader(base_addr: usize) {
     }
 }
 
-#[no_mangle]
 #[used]
 static mut DYNAMIC_PTRS: [DynEntry; 4096 / core::mem::size_of::<DynEntry>()] =
     [DynEntry(0, core::ptr::null()); 4096 / core::mem::size_of::<DynEntry>()];
 
-#[no_mangle]
 static DYNAMIC_PTRS_COUNT: AtomicUsize = AtomicUsize::new(0);
 
 #[cfg(target_arch = "x86_64")]
@@ -85,7 +83,6 @@ _plt_lookup_sym:
 use crate::elf::*;
 
 #[allow(clippy::missing_safety_doc)] // FIXME: Add safety docs
-#[no_mangle]
 #[cfg(target_arch = "x86_64")]
 pub unsafe extern "C" fn ldresolve(relno: u64, dynoff: usize) -> *mut core::ffi::c_void {
     if dynoff > DYNAMIC_PTRS_COUNT.load(Ordering::Acquire) {
