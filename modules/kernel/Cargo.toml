@@ -1,0 +1,10 @@
+[package]
+name = "lilium-kernel"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+lilium-loader = { path = "../../loader" }
+
+[lib]
+crate-type = ["cdylib"]

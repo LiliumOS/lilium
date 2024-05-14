@@ -1,0 +1,11 @@
+[unstable]
+build-std = [
+    "alloc",
+    "core",
+]
+
+[build]
+target = "x86_64-pc-lilium-kernel"
+
+[env]
+RUST_TARGET_PATH = { value = "../targets", relative = true }

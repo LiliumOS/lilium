@@ -1,0 +1,4 @@
+[package]
+name = "lilium-build-iso"
+version.workspace = true
+edition.workspace = true

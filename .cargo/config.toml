@@ -1,0 +1,4 @@
+[alias]
+iso = "run -p lilium-build-iso --"
+run-iso = "run -p lilium-run-iso --"
+clean-all = "run -p lilium-clean-all --"

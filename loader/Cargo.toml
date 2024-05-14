@@ -1,0 +1,10 @@
+[package]
+name = "lilium-loader"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+limine = "0.2.0"
+
+[lib]
+crate-type = ["cdylib"]

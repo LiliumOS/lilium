@@ -1,0 +1,8 @@
+[workspace]
+members = ["build-iso", "clean-all", "run-iso"]
+exclude = ["loader"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
