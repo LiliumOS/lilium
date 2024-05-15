@@ -14,21 +14,56 @@ struct DynEntry(usize, *const core::ffi::c_void);
 
 unsafe impl Sync for DynEntry {}
 
+#[cfg(target_arch = "x86_64")]
+macro_rules! safe_addr_of{
+    ($gsym:ident) => {
+        {
+            let ptr: *const _;
+            unsafe{core::arch::asm!("lea {reg}, [{gsym}+rip]", reg = out(reg) ptr, gsym = sym $gsym, options(nomem,pure,nostack))}
+            if false{core::ptr::addr_of!($gsym)}else{ptr}
+        }
+
+    }
+}
+
+#[cfg(target_arch = "x86_64")]
+macro_rules! safe_addr_of_mut{
+    ($gsym:ident) => {
+        {
+            let ptr: *mut _;
+            unsafe{core::arch::asm!("lea {reg}, [{gsym}+rip]", reg = out(reg) ptr, gsym = sym $gsym, options(nomem,pure,nostack))}
+            if false{core::ptr::addr_of_mut!($gsym)}else{ptr}
+        }
+
+    }
+}
+
+#[cfg(target_arch = "x86_64")]
+macro_rules! safe_atomic_store_usize_release{
+    ($atomic_ptr:expr, $val:expr) => {
+        let __atomic_ptr: &::core::sync::atomic::AtomicUsize = &$atomic_ptr;
+        let __val: ::core::primitive::usize = $val;
+        unsafe{core::arch::asm!("mov [{aptr_reg}], {reg}", aptr_reg = in(reg) __atomic_ptr as *const _, reg = in(reg) __val)}
+    }
+}
+
 /// Call at the very beginning of `_start`, to initialize the GOT.
 /// ## Safety
 ///
 /// Must only be called once and before any other function calls are made
 #[inline(never)]
 pub unsafe fn init_dyn_loader(base_addr: usize) {
-    unsafe {
-        DYNAMIC_PTRS[0] = DynEntry(base_addr, core::ptr::addr_of!(_DYNAMIC));
-    }
-    unsafe {
-        _GLOBAL_OFFSET_TABLE_[0] = core::ptr::addr_of!(_plt_lookup_sym) as *mut c_void;
-    }
-    unsafe {
-        _GLOBAL_OFFSET_TABLE_[1] = 0usize as *mut c_void;
-    }
+    let dynamic_ptrs = safe_addr_of_mut!(DYNAMIC_PTRS) as *mut DynEntry;
+
+    *dynamic_ptrs = DynEntry(base_addr, safe_addr_of!(_DYNAMIC));
+
+    let dynamic_ptrs_count = safe_addr_of!(DYNAMIC_PTRS_COUNT);
+    safe_atomic_store_usize_release!(*dynamic_ptrs_count, 1);
+
+    let got = safe_addr_of_mut!(_GLOBAL_OFFSET_TABLE_);
+
+    (*got)[0] = safe_addr_of!(_plt_lookup_sym) as *mut c_void;
+    (*got)[1] = 0 as *mut c_void;
 }
 
 #[used]
@@ -84,7 +119,7 @@ use crate::elf::*;
 
 #[allow(clippy::missing_safety_doc)] // FIXME: Add safety docs
 #[cfg(target_arch = "x86_64")]
-pub unsafe extern "C" fn ldresolve(relno: u64, dynoff: usize) -> *mut core::ffi::c_void {
+unsafe extern "C" fn ldresolve(relno: u64, dynoff: usize) -> *mut core::ffi::c_void {
     if dynoff > DYNAMIC_PTRS_COUNT.load(Ordering::Acquire) {
         return 0 as *mut core::ffi::c_void;
     }
