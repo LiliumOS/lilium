@@ -8,3 +8,8 @@ limine = "0.2.0"
 
 [lib]
 crate-type = ["cdylib"]
+
+[profile.dev]
+opt-level=1
+debug-assertions = true
+debug = 2
