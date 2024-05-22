@@ -1,6 +1,6 @@
 [workspace]
 members = ["build-iso", "clean-all", "run-iso"]
-exclude = ["loader"]
+exclude = ["loader", "fs-drivers"]
 resolver = "2"
 
 [workspace.package]

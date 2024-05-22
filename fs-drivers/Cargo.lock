@@ -69,23 +69,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lilium-loader"
-version = "0.1.0"
-dependencies = [
- "fs-drivers",
- "limine",
-]
-
-[[package]]
-name = "limine"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "846c87e24d089e8717a61098cba72b378e3525c46a87cf75b71352dcf668e68c"
-dependencies = [
- "bitflags",
-]
-
-[[package]]
 name = "nonzero_ext"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
