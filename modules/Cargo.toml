@@ -1,5 +1,5 @@
 [workspace]
-members = ["kernel"]
+members = [ "common-api","kernel"]
 resolver = "2"
 
 [workspace.package]

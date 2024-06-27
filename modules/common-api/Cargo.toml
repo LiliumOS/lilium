@@ -1,0 +1,7 @@
+[package]
+name = "common-api"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+lccc-siphash = {git="https://github.com/lccc-project/lccc-siphash"}

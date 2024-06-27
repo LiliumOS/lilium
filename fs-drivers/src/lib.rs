@@ -1,4 +1,5 @@
 #![cfg_attr(not(test), no_std)]
+#![cfg(any())]
 
 extern crate alloc;
 

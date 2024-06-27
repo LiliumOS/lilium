@@ -8,6 +8,7 @@
     "target-pointer-width": "64",
     "dynamic-linking": true,
     "relocation-model": "pic",
+    "tls-model": "global-dynamic",
     "pre-link-args": {
         "gnu-lld": [
             "-dynamic-linker=/lilium-loader.so"
