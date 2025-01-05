@@ -1,0 +1,9 @@
+primitives.include = "arch/x86_64-lp64"
+os.include = "os/elf"
+link.include = "os/x86_64-elf"
+arch.include = "arch/x86_64"
+default-tag-name = "SysV64"
+system-tag-name = "SysV64"
+
+[extended-properties]
+'x86:tls/tls-segment' = "gs"

@@ -1,8 +1,5 @@
 [unstable]
-build-std = [
-    "alloc",
-    "core",
-]
+build-std = ["alloc", "core"]
 
 [build]
 target = "x86_64-pc-lilium-kernel"
